@@ -36,7 +36,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run ASH Security Scan - ${{ matrix.target.category }}
-        uses: rickardl/automated-security-helper-action@v1.0.3
+        uses: rickardl/automated-security-helper-action@v1.0.4
         with:
           source-directory: ${{ matrix.target.path }}
           scanners: ${{ matrix.target.scanners }}
@@ -60,7 +60,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Comprehensive Security Scan
-        uses: rickardl/automated-security-helper-action@v1.0.3
+        uses: rickardl/automated-security-helper-action@v1.0.4
         with:
           source-directory: '.'
           output-format: 'both'
