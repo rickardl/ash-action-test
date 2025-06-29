@@ -135,7 +135,7 @@ performance:
 # Suppression settings
 suppressions:
   ignore_suppression_files: false
-  baseline_file: ".ash-baseline.json"
+  baseline_file: ".secrets.baseline"
 
 # Logging configuration
 logging:
