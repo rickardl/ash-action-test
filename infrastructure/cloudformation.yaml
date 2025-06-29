@@ -1,0 +1,47 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudFormation template with security issues for ASH testing'
+
+Resources:
+  # Security issue: S3 bucket without encryption
+  TestBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'ash-test-bucket-${AWS::StackName}'
+      PublicReadPolicy: Allow  # Security issue: public read access
+  # Security issue: Security group allows SSH from anywhere
+  WebSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: 'Security group for ASH testing'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0  # Security issue: SSH open to world
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+  # Security issue: RDS instance without encryption
+  TestDatabase:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: ash-test-db
+      DBInstanceClass: db.t3.micro
+      Engine: mysql
+      MasterUsername: admin
+      MasterUserPassword: plaintext_password
+      # Security issue: hardcoded password
+      AllocatedStorage: 20
+      StorageEncrypted: false  # Security issue: no encryption
+      PubliclyAccessible: true  # Security issue: publicly accessible
+
+Outputs:
+  BucketName:
+    Description: 'Name of the S3 bucket'
+    Value: !Ref TestBucket
+
+  SecurityGroupId:
+    Description: 'ID of the security group'
+    Value: !Ref WebSecurityGroup

@@ -1,0 +1,17 @@
+{
+  "name": "ash-test-frontend",
+  "version": "1.0.0",
+  "description": "Frontend test for ASH action",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "lodash": "4.17.20"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0"
+  }
+}

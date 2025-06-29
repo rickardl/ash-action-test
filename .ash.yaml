@@ -1,0 +1,144 @@
+---
+# AWS Automated Security Helper (ASH) Configuration
+# This configuration optimizes scanning for the test repository
+
+version: 3
+mode: container
+
+# Scanner configuration
+scanners:
+  # Static Application Security Testing (SAST)
+  bandit:
+    enabled: true
+    config:
+      confidence: medium
+      severity: low
+      exclude_dirs:
+        - node_modules
+        - .git
+        - __pycache__
+
+  semgrep:
+    enabled: true
+    config:
+      rulesets:
+        - "auto"
+        - "p/security-audit"
+        - "p/owasp-top-ten"
+        - "p/ci"
+      exclude_dirs:
+        - node_modules
+        - .git
+        - __pycache__
+
+  # Infrastructure as Code (IaC) scanning
+  checkov:
+    enabled: true
+    config:
+      framework: terraform,cloudformation,kubernetes
+      exclude_checks: []
+      include_checks: []
+
+  cfn-nag:
+    enabled: true
+    config:
+      exclude_checks: []
+      include_checks: []
+
+  cdk-nag:
+    enabled: true
+    config: {}
+
+  # Software Composition Analysis (SCA)
+  npm-audit:
+    enabled: true
+    config:
+      audit_level: low
+      production_only: false
+
+  grype:
+    enabled: true
+    config:
+      scope: all-layers
+      fail_on: medium
+
+  # Secrets detection
+  detect-secrets:
+    enabled: true
+    config:
+      baseline: .secrets.baseline
+      exclude_files: []
+      exclude_lines: []
+
+  git-secrets:
+    enabled: true
+    config: {}
+
+# Global filters
+filters:
+  severity_threshold: low
+  exclude_paths:
+    - "*/node_modules/*"
+    - "*/.git/*"
+    - "*/__pycache__/*"
+    - "*/ash_output/*"
+    - "*/security-results/*"
+    - "*/.terraform/*"
+    - "*/dist/*"
+    - "*/build/*"
+    - "*/.vscode/*"
+    - "*/.idea/*"
+
+  include_extensions:
+    - ".py"
+    - ".js"
+    - ".ts"
+    - ".jsx"
+    - ".tsx"
+    - ".tf"
+    - ".yml"
+    - ".yaml"
+    - ".json"
+    - ".sh"
+    - ".bash"
+    - ".dockerfile"
+    - ".Dockerfile"
+
+# Output configuration
+output:
+  formats:
+    - text
+    - json
+    - sarif
+  directory: "ash_output"
+  preserve_reports: true
+
+# GitHub integration
+github:
+  sarif:
+    enabled: true
+    category: "ash-security-scan"
+    wait_for_processing: true
+
+  pull_requests:
+    enabled: true
+    mode: review
+    format: sarif
+    comment_on_pr: true
+
+# Performance settings
+performance:
+  parallel_execution: true
+  max_workers: 4
+  timeout: 3600  # 1 hour timeout
+
+# Suppression settings
+suppressions:
+  ignore_suppression_files: false
+  baseline_file: ".ash-baseline.json"
+
+# Logging configuration
+logging:
+  level: info
+  debug: false
+  quiet: false

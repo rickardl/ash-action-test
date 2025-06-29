@@ -1,0 +1,9 @@
+# Example Terraform variables
+# Copy to terraform.tfvars and modify as needed
+
+aws_region = "us-east-1"
+environment = "test"
+project_name = "ash-action-test"
+
+# Note: This file shows how variables should be structured
+# The main.tf intentionally has hardcoded values to trigger security findings
