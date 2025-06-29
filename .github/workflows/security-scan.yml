@@ -3,17 +3,20 @@ name: Security Scan with ASH Action
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+  pull-requests: write
+  actions: read
 
 jobs:
   security-scan:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      security-events: write
-      pull-requests: write
 
     strategy:
       matrix:
@@ -45,13 +48,12 @@ jobs:
           pr-comment-format: 'sarif'
           parallel-execution: true
           enable-caching: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   comprehensive-scan:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      security-events: write
-      pull-requests: write
+    needs: security-scan
+    if: always()
 
     steps:
       - name: Checkout code
@@ -72,3 +74,4 @@ jobs:
           enable-caching: true
           upload-artifacts: true
           artifact-retention-days: 30
+          github-token: ${{ secrets.GITHUB_TOKEN }}
