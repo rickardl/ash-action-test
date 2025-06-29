@@ -1,5 +1,7 @@
 # ASH Action Test Repository
 
+[![Security Scan with ASH Action](https://github.com/rickardl/ash-action-test/actions/workflows/security-scan.yml/badge.svg)](https://github.com/rickardl/ash-action-test/actions/workflows/security-scan.yml)
+
 This repository demonstrates the [AWS Automated Security Helper (ASH) GitHub Action](https://github.com/rickardl/automated-security-helper-action) security scanning capabilities across multiple technology stacks.
 
 ## ⚠️ WARNING: DO NOT DEPLOY
