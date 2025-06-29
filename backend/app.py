@@ -12,7 +12,7 @@ from flask import Flask, request
 app = Flask(__name__)
 
 # Hardcoded credentials - should be detected by secrets scanners
-DATABASE_PASSWORD = "super_secret_password_123"
+DATABASE_PASSWORD = "super_secret_password_1234"
 API_TOKEN = "token_abcdef123456789"
 
 

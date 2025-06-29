@@ -20,7 +20,7 @@ resource "aws_s3_bucket" "example" {
 }
 
 resource "random_string" "bucket_suffix" {
-  length  = 8
+  length  = 5
   special = false
   upper   = false
 }
